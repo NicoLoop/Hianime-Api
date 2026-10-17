@@ -59,21 +59,19 @@
 flowchart TD
     Client[Client App / Browser / Mobile Frontend] -->|HTTP Request| Express[Express.js Server]
     Express --> Router[Router /api/v1/hianime]
-    
-    subgraph Core Engine [Senkai Sora Core Engine]
+subgraph CoreEngine["Senkai Sora Core Engine"]
         Router --> Controllers[Controllers & Validation]
         Controllers --> Extractors[Cheerio Extractors]
         Extractors --> Service[Scraper Service / Axios Agent]
         Extractors --> Crypto[AES-256-CBC Decryptor]
     end
-
-    subgraph Upstream Targets [Upstream Streaming Targets]
+subgraph UpstreamTargets["Upstream Streaming Targets"]
         Service -->|Scrape HTML & API| HiAnime[HiAnime.ba]
         Service -->|Extract HLS & VTT| Zoko[ZokoAnime.video]
         Crypto -->|Decrypt getSources| MegaPlay[MegaPlay.buzz HD-1]
     end
-
-    Core Engine -->|Structured JSON / AdminLTE UI| Client
+Controllers --> Response[Structured JSON / AdminLTE UI]
+    Response --> Client
 ```
 
 ---
